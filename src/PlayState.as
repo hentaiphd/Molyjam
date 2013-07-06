@@ -11,12 +11,8 @@ package{
     protected var _text:FlxText;
     protected var _snackGrp:FlxGroup;
     protected var _snack:Snacks;
-    protected var _snack2:Snacks;
-    protected var _snack3:Snacks;
-    protected var _snack4:Snacks;
 
         override public function create():void{
-            //FlxG.bgColor = 0x00000000;
 
             _level = new FlxTilemap();
             _level.loadMap(FlxTilemap.imageToCSV(ImgMap,false,4),ImgTiles,0,0,FlxTilemap.ALT);
@@ -25,7 +21,13 @@ package{
 
             _player = new Player(120,100);
             add(_player);
-            FlxG.camera.follow(_player, FlxCamera.STYLE_PLATFORMER);
+
+            FlxG.worldBounds = new FlxRect(0, 0, _level.width, _level.height);
+
+            var cam:ZoomCamera = new ZoomCamera(0, 0, 640, 480);
+            FlxG.resetCameras(cam);
+            cam.target = _player;
+            cam.targetZoom = 2;
 
             _mom = new Mom(100,170,_level);
             add(_mom);
@@ -36,17 +38,17 @@ package{
             add(_snack);
             _snackGrp.add(_snack);
 
-            _snack2 = new Snacks(100,250);
-            add(_snack2);
-            _snackGrp.add(_snack2);
+            _snack = new Snacks(100,250);
+            add(_snack);
+            _snackGrp.add(_snack);
 
-            _snack3 = new Snacks(100,100);
-            add(_snack3);
-            _snackGrp.add(_snack3);
+            _snack = new Snacks(100,100);
+            add(_snack);
+            _snackGrp.add(_snack);
 
-            _snack3 = new Snacks(300,300);
-            add(_snack3);
-            _snackGrp.add(_snack3);
+            _snack = new Snacks(300,300);
+            add(_snack);
+            _snackGrp.add(_snack);
         }
 
         public function collisionCallback(player:Player, mom:Mom):void{
