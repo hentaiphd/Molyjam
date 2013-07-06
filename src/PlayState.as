@@ -14,7 +14,6 @@ package
     protected var _snack:Snacks;
 
         override public function create():void{
-
             //FlxG.bgColor = 0x00000000;
 
             _level = new FlxTilemap();
@@ -26,19 +25,18 @@ package
             add(_player);
             FlxG.camera.follow(_player, FlxCamera.STYLE_PLATFORMER);
 
-            _mom = new Mom(100,170);
+            _mom = new Mom(100,170,_level);
             add(_mom);
+            _mom.setTarget(new FlxPoint(_player.x, _player.y));
 
             _snack = new Snacks(50,250);
-
-
         }
 
         public function collisionCallback(player:Player, mom:Mom):void{
         }
 
         public function collisionCallbackSnack(player:Player, snack:Snacks):void{
-            _text = new FlxText(this.x, this.y, 30, "Snacks!");
+            //_text = new FlxText(this.x, this.y, 30, "Snacks!");
         }
 
         override public function update():void{

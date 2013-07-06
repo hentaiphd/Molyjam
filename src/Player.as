@@ -4,7 +4,7 @@ package{
     public class Player extends FlxSprite{
         //[Embed(source = '../assets/sprite.jpg')] public static var sprite:Class;
 
-        private var runSpeed = 5;
+        private var runSpeed:Number = 5;
 
         public function Player(x:int, y:int):void{
             super(x,y);
