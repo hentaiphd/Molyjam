@@ -9,6 +9,9 @@ package
     protected var _level:FlxTilemap;
     protected var _player:Player;
     protected var _mom:Mom;
+    protected var _text:FlxText;
+    protected var _snackGrp:FlxGroup;
+    protected var _snack:Snacks;
 
         override public function create():void{
 
@@ -26,14 +29,22 @@ package
             _mom = new Mom(100,170);
             add(_mom);
 
+            _snack = new Snacks(50,250);
+
+
         }
 
         public function collisionCallback(player:Player, mom:Mom):void{
         }
 
+        public function collisionCallbackSnack(player:Player, snack:Snacks):void{
+            _text = new FlxText(this.x, this.y, 30, "Snacks!");
+        }
+
         override public function update():void{
             super.update();
             FlxG.collide(_player, _mom, collisionCallback);
+            FlxG.collide(_player, _snack, collisionCallbackSnack)
             FlxG.collide();
         }
     }
