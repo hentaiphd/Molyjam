@@ -3,14 +3,15 @@ package{
     import org.flixel.system.FlxTile;
 
     public class PlayState extends FlxState {
-    [Embed(source="../assets/ImgMap.png")] private var ImgMap:Class;
-    [Embed(source="../assets/tiles.png")] private var ImgTiles:Class;
-    protected var _level:FlxTilemap;
-    protected var _player:Player;
-    protected var _mom:Mom;
-    protected var _text:FlxText;
-    protected var _snackGrp:FlxGroup;
-    protected var _snack:Snacks;
+        [Embed(source="../assets/ImgMap.png")] private var ImgMap:Class;
+        [Embed(source="../assets/tiles.png")] private var ImgTiles:Class;
+
+        protected var _level:FlxTilemap;
+        protected var _player:Player;
+        protected var _mom:Mom;
+        protected var _text:FlxText;
+        protected var _snackGrp:FlxGroup;
+        protected var _snack:Snacks;
 
         override public function create():void{
 
@@ -29,7 +30,7 @@ package{
             cam.target = _player;
             cam.targetZoom = 2;
 
-            _mom = new Mom(100,170,_level);
+            _mom = new Mom(400,270,_level);
             add(_mom);
 
             _snackGrp = new FlxGroup();
@@ -57,20 +58,20 @@ package{
 
         override public function update():void{
             super.update();
+
             FlxG.collide(_player, _level);
 
-            if(FlxG.keys.X){
-                _mom.setTarget(new FlxPoint(_player.x, _player.y));
+            var tgt:FlxPoint = _mom.searchFor(_player);
+            if(tgt){
+                _mom.setTarget(tgt);
             }
 
-            //move currently grabbed object to position of player
             _player.isGrabbing();
 
-            if(FlxG.keys.SPACE){
+            if(FlxG.keys.Z){
                 if(_player.snackGrabbed == null){
                     for(var i:Number = 0; i < _snackGrp.length; i++){
                         if(_player.overlaps(_snackGrp.members[i])){
-                            _player.grabbed = true;
                             _player.isGrabbing(_snackGrp.members[i]);
                         }
                     }

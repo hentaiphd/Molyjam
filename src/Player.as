@@ -4,8 +4,7 @@ package{
     public class Player extends FlxSprite{
         //[Embed(source = '../assets/sprite.jpg')] public static var sprite:Class;
 
-        private var runSpeed:Number = 5;
-        public var grabbed:Boolean = false;
+        private var runSpeed:Number = 4;
         public var snackGrabbed:FlxSprite = null;
 
         public function Player(x:Number, y:Number):void{
@@ -20,7 +19,7 @@ package{
             }
 
             if(snackGrabbed != null){
-                snackGrabbed.x = this.x+40;
+                snackGrabbed.x = this.x+20;
                 snackGrabbed.y = this.y;
             }
         }
@@ -32,7 +31,8 @@ package{
                 x -= runSpeed;
             } else if(FlxG.keys.RIGHT){
                 x += runSpeed;
-            } else if(FlxG.keys.UP){
+            }
+            if(FlxG.keys.UP){
                 y -= runSpeed;
             } else if(FlxG.keys.DOWN){
                 y += runSpeed;

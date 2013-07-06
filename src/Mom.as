@@ -28,6 +28,26 @@ package{
             }
         }
 
+        public function searchFor(_object:FlxSprite):FlxPoint{
+            var found:Boolean = _level.ray(new FlxPoint(x, y),
+                                           new FlxPoint(_object.x, _object.y));
+            var maxDisp:Number = 200;
+            if(overlaps(_level)){
+                maxDisp = 50;
+                found = true;
+            }
+            if(found && displacement(_object) < maxDisp){
+                return new FlxPoint(_object.x, _object.y);
+            }
+            return null;
+        }
+
+        public function displacement(_object:FlxSprite):Number{
+            var dx:Number = Math.abs(_object.x - this.x);
+            var dy:Number = Math.abs(_object.y - this.y);
+            return Math.sqrt(dx*dx + dy*dy);
+        }
+
         public function isInRange(_point:FlxPoint):Boolean{
             if(Math.abs(_point.x - this.x) < 10 &&
                Math.abs(_point.y - this.y) < 10){
@@ -39,6 +59,7 @@ package{
         public function stopFollowing():void{
             this.stopFollowingPath(true);
             this.velocity.x = this.velocity.y = 0;
+            this._curTarget = null;
         }
 
         public function setTarget(_point:FlxPoint):void{
@@ -46,7 +67,7 @@ package{
 
             var path:FlxPath = this._level.findPath(
                 new FlxPoint(x + width/2, y + height/2), _point);
-            this.followPath(path);
+            this.followPath(path, 150);
         }
 
         public function moveToPoint(_point:FlxPoint, _level:FlxTilemap):void{
