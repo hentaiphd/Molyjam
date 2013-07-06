@@ -11,20 +11,19 @@ package
             t.size = 16;
             t.alignment = "center";
             add(t);
-            t = new FlxText(FlxG.width/2-50,FlxG.height-20,100,"click to play");
+            t = new FlxText(FlxG.width/2-50,FlxG.height-20,100,"x to play");
             t.alignment = "center";
             add(t);
 
-            FlxG.mouse.show();
+            FlxG.mouse.hide();
         }
 
         override public function update():void
         {
             super.update();
 
-            if(FlxG.mouse.justPressed())
+            if(FlxG.keys.X)
             {
-                FlxG.mouse.hide();
                 FlxG.switchState(new PlayState());
             }
         }
