@@ -1,5 +1,4 @@
-package
-{
+package{
     import org.flixel.*;
     import org.flixel.system.FlxTile;
 

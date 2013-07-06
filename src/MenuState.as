@@ -1,11 +1,8 @@
-package
-{
+package{
     import org.flixel.*;
 
-    public class MenuState extends FlxState
-    {
-        override public function create():void
-        {
+    public class MenuState extends FlxState{
+        override public function create():void{
             var t:FlxText;
             t = new FlxText(0,FlxG.height/2-10,FlxG.width,"molyjamz");
             t.size = 16;
@@ -18,8 +15,7 @@ package
             FlxG.mouse.hide();
         }
 
-        override public function update():void
-        {
+        override public function update():void{
             super.update();
 
             if(FlxG.keys.X)
