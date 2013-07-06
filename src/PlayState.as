@@ -3,24 +3,30 @@ package{
     import org.flixel.system.FlxTile;
 
     public class PlayState extends FlxState {
-        [Embed(source="../assets/ImgMap.png")] private var ImgMap:Class;
-        [Embed(source="../assets/tiles.png")] private var ImgTiles:Class;
-
+        [Embed(source="../assets/mapCSV_Group1_Map1.csv", mimeType = "application/octet-stream")] private var Map:Class;
+        [Embed(source="../assets/tiles1.png")] private var ImgTiles:Class;
         protected var _level:FlxTilemap;
         protected var _player:Player;
         protected var _mom:Mom;
         protected var _text:FlxText;
         protected var _snackGrp:FlxGroup;
         protected var _snack:Snacks;
+        protected var _snack2:Snacks;
+        protected var _snack3:Snacks;
+        protected var _snack4:Snacks;
 
         override public function create():void{
 
             _level = new FlxTilemap();
-            _level.loadMap(FlxTilemap.imageToCSV(ImgMap,false,4),ImgTiles,0,0,FlxTilemap.ALT);
+            _level.loadMap(new Map,ImgTiles,8,8,FlxTilemap.OFF);
             _level.follow();
             add(_level);
 
-            _player = new Player(120,100);
+            _level.setTileProperties(1,0,null,null,10);
+            _level.setTileProperties(15,0);
+            _level.setTileProperties(44,0,null,null,3);
+
+            _player = new Player(170,100);
             add(_player);
 
             FlxG.worldBounds = new FlxRect(0, 0, _level.width, _level.height);

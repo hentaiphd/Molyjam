@@ -10,7 +10,7 @@ package{
         public function Player(x:Number, y:Number):void{
             super(x,y);
 
-            this.makeGraphic(20,20,0x4E0B1FFF)
+            this.makeGraphic(5,5,0x4E0B1FFF)
         }
 
         public function isGrabbing(snack:Snacks = null):void{
