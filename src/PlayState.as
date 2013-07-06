@@ -29,7 +29,6 @@ package
         }
 
         public function collisionCallback(player:Player, mom:Mom):void{
-            _mom.Talk();
         }
 
         override public function update():void{
