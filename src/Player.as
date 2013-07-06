@@ -4,9 +4,9 @@ package{
     public class Player extends FlxSprite{
         //[Embed(source = '../assets/sprite.jpg')] public static var sprite:Class;
 
-        private var runSpeed = 5;
+        private var runSpeed:Number = 5;
 
-        public function Player(x:int, y:int):void{
+        public function Player(x:Number, y:Number):void{
             super(x,y);
 
             this.makeGraphic(20,20,0x4E0B1FFF)

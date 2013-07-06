@@ -22,15 +22,18 @@ package
             _level.follow();
             add(_level);
 
-            _player = new Player(100,100);
+            _player = new Player(120,100);
             add(_player);
             FlxG.camera.follow(_player, FlxCamera.STYLE_PLATFORMER);
 
             _mom = new Mom(100,170);
             add(_mom);
 
-            _snack = new Snacks(50,250);
+            _snackGrp = new FlxGroup();
 
+            _snack = new Snacks(100,100);
+            add(_snack);
+            _snackGrp.add(_snack);
 
         }
 
@@ -38,7 +41,8 @@ package
         }
 
         public function collisionCallbackSnack(player:Player, snack:Snacks):void{
-            _text = new FlxText(this.x, this.y, 30, "Snacks!");
+            _text = new FlxText(_snack.x, _snack.y, 30, "Snacks!");
+            _text.color = 0xffffffff;
         }
 
         override public function update():void{
