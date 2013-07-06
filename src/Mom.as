@@ -7,16 +7,14 @@ package{
         private var yAnchor:int;
         private var textLock:Boolean = false;
         private var _curTarget:FlxPoint;
-        private var _hasHitTarget:Boolean;
         private var _level:FlxTilemap;
 
+        public var _hasHitTarget:Boolean;
         public var _reply:FlxText;
 
         public function Mom(x:Number, y:Number, _level:FlxTilemap):void{
             super(x,y);
 
-            xAnchor = x;
-            yAnchor = y;
             this._level = _level;
 
             this.makeGraphic(20,15,0xFFFFFFFF)
@@ -24,14 +22,28 @@ package{
 
         override public function update():void{
             super.update();
+
+            if(_curTarget && this.isInRange(this._curTarget)){
+                stopFollowing();
+            }
+        }
+
+        public function isInRange(_point:FlxPoint):Boolean{
+            if(Math.abs(_point.x - this.x) < 10 &&
+               Math.abs(_point.y - this.y) < 10){
+                return true;
+            }
+            return false;
+        }
+
+        public function stopFollowing():void{
+            this.stopFollowingPath(true);
+            this.velocity.x = this.velocity.y = 0;
         }
 
         public function setTarget(_point:FlxPoint):void{
             this._curTarget = _point;
-            if(_point.x == x && _point.y == y){
-                this._hasHitTarget = true;
-                return;
-            }
+
             var path:FlxPath = this._level.findPath(
                 new FlxPoint(x + width/2, y + height/2), _point);
             this.followPath(path);

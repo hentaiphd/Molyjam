@@ -27,7 +27,6 @@ package
 
             _mom = new Mom(100,170,_level);
             add(_mom);
-            _mom.setTarget(new FlxPoint(_player.x, _player.y));
 
             _snackGrp = new FlxGroup();
 
@@ -37,6 +36,7 @@ package
         }
 
         public function collisionCallback(player:Player, mom:Mom):void{
+            _mom.stopFollowing();
         }
 
         public function collisionCallbackSnack(player:Player, snack:Snacks):void{
@@ -46,9 +46,13 @@ package
 
         override public function update():void{
             super.update();
-            FlxG.collide(_player, _mom, collisionCallback);
+            FlxG.collide(_player, _level);
             FlxG.collide(_player, _snack, collisionCallbackSnack)
-            FlxG.collide();
+            FlxG.collide(_player, _snack, collisionCallbackSnack)
+
+            if(FlxG.keys.X){
+                _mom.setTarget(new FlxPoint(_player.x, _player.y));
+            }
         }
     }
 }
