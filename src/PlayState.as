@@ -24,7 +24,7 @@ package{
 
             _level.setTileProperties(1,0,null,null,10);
             _level.setTileProperties(15,0);
-            _level.setTileProperties(44,0,null,null,3);
+            _level.setTileProperties(44,0,null,null,4);
 
             _player = new Player(170,100);
             add(_player);
