@@ -11,6 +11,9 @@ package{
     protected var _text:FlxText;
     protected var _snackGrp:FlxGroup;
     protected var _snack:Snacks;
+    protected var _snack2:Snacks;
+    protected var _snack3:Snacks;
+    protected var _snack4:Snacks;
 
         override public function create():void{
             //FlxG.bgColor = 0x00000000;
@@ -29,28 +32,49 @@ package{
 
             _snackGrp = new FlxGroup();
 
-            _snack = new Snacks(50,250);
+            _snack = new Snacks(250,100);
             add(_snack);
             _snackGrp.add(_snack);
+
+            _snack2 = new Snacks(100,250);
+            add(_snack2);
+            _snackGrp.add(_snack2);
+
+            _snack3 = new Snacks(100,100);
+            add(_snack3);
+            _snackGrp.add(_snack3);
+
+            _snack3 = new Snacks(300,300);
+            add(_snack3);
+            _snackGrp.add(_snack3);
         }
 
         public function collisionCallback(player:Player, mom:Mom):void{
             _mom.stopFollowing();
         }
 
-        public function collisionCallbackSnack(player:Player, snack:Snacks):void{
-            _text = new FlxText(_snack.x, _snack.y, 30, "Snacks!");
-            _text.color = 0xffffffff;
-        }
-
         override public function update():void{
             super.update();
             FlxG.collide(_player, _level);
-            FlxG.collide(_player, _snack, collisionCallbackSnack)
-            FlxG.collide(_player, _snack, collisionCallbackSnack)
 
             if(FlxG.keys.X){
                 _mom.setTarget(new FlxPoint(_player.x, _player.y));
+            }
+
+            //move currently grabbed object to position of player
+            _player.isGrabbing();
+
+            if(FlxG.keys.SPACE){
+                if(_player.snackGrabbed == null){
+                    for(var i:Number = 0; i < _snackGrp.length; i++){
+                        if(_player.overlaps(_snackGrp.members[i])){
+                            _player.grabbed = true;
+                            _player.isGrabbing(_snackGrp.members[i]);
+                        }
+                    }
+                }
+            } else {
+                _player.snackGrabbed = null;
             }
         }
     }
