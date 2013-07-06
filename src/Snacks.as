@@ -7,7 +7,7 @@ package{
         public function Snacks(x:int, y:int):void{
             super(x,y);
 
-            this.makeGraphic(5,5,0xFFFFFFFF)
+            this.makeGraphic(2,2,0xFF00FF00)
         }
 
         override public function update():void{

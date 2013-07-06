@@ -4,13 +4,13 @@ package{
     public class Player extends FlxSprite{
         //[Embed(source = '../assets/sprite.jpg')] public static var sprite:Class;
 
-        private var runSpeed:Number = 4;
+        private var runSpeed:Number = 5;
         public var snackGrabbed:FlxSprite = null;
 
         public function Player(x:Number, y:Number):void{
             super(x,y);
 
-            this.makeGraphic(5,5,0x4E0B1FFF)
+            this.makeGraphic(5,5,0xFF0B1FFF)
         }
 
         public function isGrabbing(snack:Snacks = null):void{

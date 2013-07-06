@@ -17,7 +17,7 @@ package{
 
             this._level = _level;
 
-            this.makeGraphic(20,15,0xFFFFFFFF)
+            this.makeGraphic(5,5,0xFFFF0000)
         }
 
         override public function update():void{

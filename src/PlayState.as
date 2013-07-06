@@ -34,7 +34,7 @@ package{
             var cam:ZoomCamera = new ZoomCamera(0, 0, 640, 480);
             FlxG.resetCameras(cam);
             cam.target = _player;
-            cam.targetZoom = 2;
+            cam.targetZoom = 4;
 
             _mom = new Mom(400,270,_level);
             add(_mom);
