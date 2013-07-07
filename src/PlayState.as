@@ -1,4 +1,6 @@
 package{
+    import flash.utils.ByteArray;
+
     import org.flixel.*;
     import org.flixel.system.FlxTile;
 
@@ -16,9 +18,20 @@ package{
         protected var _gameStateActive:Boolean = true;
         protected var _goalSprite:FlxSprite;
 
+        protected var _unusedSnackPositions:Array;
+        protected var _unusedMomPositions:Array;
+        protected var _unusedNoisePositions:Array;
+
         protected var _coordsText:FlxText;
 
+        public function assert(expression:Boolean):void{
+            if (!expression)
+                throw new Error("Assertion failed!");
+        }
+
         override public function create():void{
+            setupItemPositions();
+
             FlxG.mouse.show();
 
             _timer = 0;
@@ -45,27 +58,34 @@ package{
             FlxG.resetCameras(cam);
             cam.follow(_level);
             cam.target = _player;
-            cam.targetZoom = 1.5;
+            cam.targetZoom = 3;
 
             _momGrp = new FlxGroup();
-            for(var i:Number = 0; i < 4; i++){
-                var _mom:Mom = new Mom(Math.random()*(300-100)+100,Math.random()*(300-100)+100,_level);
+            for(var i:Number = 0; i < 3; i++){
+                var thisIndex:Number = Math.floor(Math.random()*_unusedMomPositions.length);
+                var mypos:FlxPoint = _unusedMomPositions[thisIndex] as FlxPoint;
+                var _mom:Mom = new Mom(mypos.x, mypos.y,_level);
                 _momGrp.add(_mom);
                 add(_mom);
             }
 
             _snackGrp = new FlxGroup();
-            for(i = 0; i < 20; i++){
-                var _snack:Snacks = new Snacks(Math.random()*(300),Math.random()*(300));
+            for(i = 0; i < 8; i++){
+                thisIndex = Math.floor(Math.random()*_unusedSnackPositions.length);
+                mypos = _unusedSnackPositions[thisIndex] as FlxPoint;
+                var _snack:Snacks = new Snacks(mypos.x, mypos.y);
                 add(_snack);
                 _snackGrp.add(_snack);
             }
 
             _noiseGrp = new FlxGroup();
-            for(i = 0; i < 5; i++){
-                var _noise:NoiseZone = new NoiseZone(Math.random()*(300),Math.random()*(300));
+            for(i = 0; i < 3; i++){
+                thisIndex = Math.floor(Math.random()*_unusedNoisePositions.length);
+                mypos = _unusedNoisePositions[thisIndex] as FlxPoint;
+                var _noise:NoiseZone = new NoiseZone(mypos.x, mypos.y);
                 add(_noise);
                 _noiseGrp.add(_noise);
+                _unusedNoisePositions.splice(thisIndex, 1);
             }
 
             _coordsText = new FlxText(0, FlxG.height/2, 640, "0 x 0");
@@ -123,12 +143,12 @@ package{
                 if(FlxG.keys.Z){
                     if(_player.snackGrabbed == null){
                         for(i = 0; i < _snackGrp.length; i++){
-                            if(_player.overlaps(_snackGrp.members[i])){
+                            if(displacement(_player, _snackGrp.members[i]) < 15){
                                 _player.isGrabbing(_snackGrp.members[i]);
                             }
                         }
                         for(i = 0; i < _noiseGrp.length; i++){
-                            if(_player.overlaps(_noiseGrp.members[i])){
+                            if(displacement(_player, _noiseGrp.members[i]) < 15){
                                 _noiseGrp.members[i].makeActive();
                             }
                         }
@@ -156,6 +176,61 @@ package{
             t.size = 10;
             t.scrollFactor = new FlxPoint(0, 0);
             add(t);
+        }
+
+        public function setupItemPositions():void{
+            _unusedSnackPositions = new Array(
+                new FlxPoint(274, 329),
+                new FlxPoint(189, 360),
+                new FlxPoint(196, 310),
+                new FlxPoint(204, 360),
+                new FlxPoint(54, 360),
+                new FlxPoint(269, 216),
+                new FlxPoint(277, 135),
+                new FlxPoint(54, 126),
+                new FlxPoint(30, 213),
+                new FlxPoint(70, 215),
+                new FlxPoint(134, 189),
+                new FlxPoint(205, 188),
+                new FlxPoint(207, 269),
+                new FlxPoint(133, 271),
+                new FlxPoint(367, 7),
+                new FlxPoint(367, 87),
+                new FlxPoint(214, 81),
+                new FlxPoint(227, 12),
+                new FlxPoint(305, 8)
+            );
+
+            _unusedMomPositions = new Array(
+                new FlxPoint(196, 7),
+                new FlxPoint(107, 143),
+                new FlxPoint(161, 345),
+                new FlxPoint(299, 277),
+                new FlxPoint(315, 29),
+                new FlxPoint(167, 122),
+                new FlxPoint(193, 223),
+                new FlxPoint(387, 223)
+            );
+
+            _unusedNoisePositions = new Array(
+                new FlxPoint(227, 219),
+                new FlxPoint(260, 307),
+                new FlxPoint(356, 102),
+                new FlxPoint(314, 43),
+                new FlxPoint(173, 11),
+                new FlxPoint(23, 59),
+                new FlxPoint(124, 135),
+                new FlxPoint(15, 166),
+                new FlxPoint(39, 227),
+                new FlxPoint(162, 360),
+                new FlxPoint(55, 360)
+            );
+        }
+
+        public function displacement(_object1:FlxSprite, _object2:FlxSprite):Number{
+            var dx:Number = Math.abs(_object1.x - _object2.x);
+            var dy:Number = Math.abs(_object1.y - _object2.y);
+            return Math.sqrt(dx*dx + dy*dy);
         }
     }
 }
