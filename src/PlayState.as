@@ -56,7 +56,6 @@ package{
                 _goalSprite = new FlxSprite(_rect.x, _rect.y);
                 _goalSprite.makeGraphic(_rect.width, _rect.height, 0x44FF0000);
                 add(_goalSprite);
-                _unusedEndzones.splice(thisIndex, 1);
             }
 
             _player = new Player(10, 10);

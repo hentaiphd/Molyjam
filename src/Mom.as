@@ -26,6 +26,9 @@ package{
         public var _scaleFlipX:Number = 1;
         public var _scaleFlipY:Number = 1;
 
+        public var _patrolPoints:Array;
+        public var patrolPointCounter:Number = 0;;
+
         public var lastFramVel:FlxPoint = new FlxPoint();
 
         public function Mom(x:Number, y:Number, _level:FlxTilemap):void{
@@ -34,15 +37,16 @@ package{
             this._level = _level;
             this._runSpeed = Math.random() * (maxSpeed-minSpeed) + minSpeed;
             this.originPoint = new FlxPoint(x, y);
+            this._patrolPoints = new Array();
 
             loadGraphic(sprite, true, true, 15, 33, true);
             width = 8;
             height = 8;
             offset.y = 16;
 
-            addAnimation("run", [1,2], 14, true);
+            addAnimation("run", [1,2], 7, true);
             addAnimation("standing", [0]);
-            addAnimation("runBack", [4,5], 14, true);
+            addAnimation("runBack", [4,5], 7, true);
             addAnimation("standingBack", [3]);
         }
 
@@ -79,9 +83,22 @@ package{
 
             if(_curTarget && this.isInRange(this._curTarget)){
                 stopFollowing();
+                setTarget(getNextPatrolPoint(), -30);
             }
 
             lastFramVel = new FlxPoint(velocity.x, velocity.y);
+        }
+
+        public function getNextPatrolPoint():FlxPoint{
+            return new FlxPoint(Math.random()*50*8, Math.random()*50*8);
+
+            /*var point:FlxPoint = _patrolPoints[patrolPointCounter] as FlxPoint;
+            if(patrolPointCounter < _patrolPoints.length-1){
+                patrolPointCounter++;
+            } else {
+                patrolPointCounter = 0;
+            }
+            return new FlxPoint(point.x, point.y);*/
         }
 
         public function searchFor(_object:Player, _time:Number):void{
@@ -100,7 +117,7 @@ package{
                 }
             }
             if(_time - _lastFoundTime > 5 && !_distracted) {
-                setTarget(originPoint);
+                setTarget(getNextPatrolPoint(), -30);
             }
         }
 
