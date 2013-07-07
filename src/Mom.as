@@ -15,11 +15,14 @@ package{
         public var _hasHitTarget:Boolean;
         public var _reply:FlxText;
 
+        public static var maxSpeed:Number = 80;
+        public static var minSpeed:Number = 70;
+
         public function Mom(x:Number, y:Number, _level:FlxTilemap):void{
             super(x,y);
 
             this._level = _level;
-            this._runSpeed = Math.random() * (50-40) + 40;
+            this._runSpeed = Math.random() * (maxSpeed-minSpeed) + minSpeed;
             this.originPoint = new FlxPoint(x, y);
 
             this.makeGraphic(5,5,0xFFFF0000)

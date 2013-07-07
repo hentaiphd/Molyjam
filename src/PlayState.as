@@ -36,7 +36,7 @@ package{
             cam.targetZoom = 3;
 
             _momGrp = new FlxGroup();
-            for(var i:Number = 0; i < 2; i++){
+            for(var i:Number = 0; i < 3; i++){
                 var _mom:Mom = new Mom(Math.random()*(300-100)+100,Math.random()*(300-100)+100,_level);
                 _momGrp.add(_mom);
                 add(_mom);
