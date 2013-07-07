@@ -182,9 +182,11 @@ package{
                             _snackGrp.add(_snack);
                         }
                     }
-                    for(i = 0; i < _noiseGrp.length; i++){
-                        if(displacement(_player, _noiseGrp.members[i] as NoiseZone) < 40){
-                            _noiseGrp.members[i].makeActive();
+                    if(_player.snackGrabbed == null){
+                        for(i = 0; i < _noiseGrp.length; i++){
+                            if(displacement(_player, _noiseGrp.members[i] as NoiseZone) < 40){
+                                _noiseGrp.members[i].makeActive();
+                            }
                         }
                     }
                 } else {
