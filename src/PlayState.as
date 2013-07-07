@@ -7,6 +7,7 @@ package{
     public class PlayState extends FlxState {
         [Embed(source="../assets/mapCSV_Group1_Map1.csv", mimeType = "application/octet-stream")] private var Map:Class;
         [Embed(source="../assets/tiles1.png")] private var ImgTiles:Class;
+        [Embed(source = "../assets/bgm_mom.mp3")] private var bgm:Class;
         protected var _level:FlxTilemap;
         protected var _player:Player;
         protected var zoomcam:ZoomCamera;
@@ -103,6 +104,15 @@ package{
             _coordsText.color = 0xFFFF0000;
             _coordsText.scrollFactor = new FlxPoint(0, 0);
             //add(_coordsText);
+
+            if(FlxG.music == null){
+                FlxG.playMusic(bgm);
+            } else {
+                FlxG.music.resume();
+                if(!FlxG.music.active){
+                    FlxG.playMusic(bgm);
+                }
+            }
         }
 
         public function snacksInGoal():Number{
@@ -173,7 +183,7 @@ package{
                         }
                     }
                     for(i = 0; i < _noiseGrp.length; i++){
-                        if(displacement(_player, _noiseGrp.members[i] as NoiseZone) < 15){
+                        if(displacement(_player, _noiseGrp.members[i] as NoiseZone) < 40){
                             _noiseGrp.members[i].makeActive();
                         }
                     }
