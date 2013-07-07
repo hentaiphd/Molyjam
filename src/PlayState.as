@@ -34,7 +34,7 @@ package{
             FlxG.resetCameras(cam);
             cam.follow(_level);
             cam.target = _player;
-            cam.targetZoom = 2;
+            cam.targetZoom = 3;
 
             _momGrp = new FlxGroup();
             for(var i:Number = 0; i < 4; i++){
