@@ -50,12 +50,12 @@ package{
                 var thisIndex:Number = Math.floor(Math.random()*_unusedEndzones.length);
                 var _rect:FlxRect = _unusedEndzones[thisIndex] as FlxRect;
                 _goalSprite = new FlxSprite(_rect.x, _rect.y);
-                _goalSprite.makeGraphic(_rect.width, _rect.height, 0xFFFFFF00);
+                _goalSprite.makeGraphic(_rect.width, _rect.height, 0x44FF0000);
                 add(_goalSprite);
                 _unusedEndzones.splice(thisIndex, 1);
             }
 
-            _player = new Player(300,300);
+            _player = new Player(10, 10);
             add(_player);
 
             FlxG.worldBounds = new FlxRect(0, 0, _level.width, _level.height);
@@ -64,7 +64,7 @@ package{
             FlxG.resetCameras(cam);
             cam.follow(_level);
             cam.target = _player;
-            cam.targetZoom = 1;
+            cam.targetZoom = 3;
 
             _momGrp = new FlxGroup();
             for(var i:Number = 0; i < 3; i++){
@@ -113,6 +113,14 @@ package{
             return false;
         }
 
+        public function flipGoalSpriteColor():void{
+            if(_goalSprite.alpha == 0){
+                _goalSprite.alpha = .4;
+            } else {
+                _goalSprite.alpha = 0;
+            }
+        }
+
         override public function update():void{
             _timer += FlxG.elapsed;
             _coordsText.text = FlxG.mouse.screenX + " x " + FlxG.mouse.screenY;
@@ -124,6 +132,10 @@ package{
             } else if(_gameStateActive){
                 super.update();
                 FlxG.collide(_player, _level);
+
+                if(Math.floor(_timer) % 2 == 0){
+                    flipGoalSpriteColor();
+                }
 
                 updateMomAI();
 
