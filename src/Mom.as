@@ -40,32 +40,24 @@ package{
             if(_curTarget && this.isInRange(this._curTarget)){
                 stopFollowing();
             }
-
-            if(_distracted && _timer - _distractedTime > 10){
-                _distracted = false;
-            }
-        }
-
-        public function distract():void{
-            _distracted = true;
-            _distractedTime = _timer;
         }
 
         public function searchFor(_object:Player, _time:Number):void{
             var found:Boolean = _level.ray(new FlxPoint(x, y),
                                            new FlxPoint(_object.x, _object.y));
-            if(found && _object.snackGrabbed){
+            if(found){
                 _lastFoundTime = _time;
             }
             var maxDisp:Number = 100;
 
             if(_object.snackGrabbed){
                 if(((_time - _lastFoundTime < .5) ||
-                 found && !_distracted && displacement(_object) < maxDisp)){
+                 found && displacement(_object) < maxDisp)){
+                    _distracted = false;
                     setTarget(new FlxPoint(_object.x, _object.y), 10);
                 }
             }
-            if(_time - _lastFoundTime > 5 || !_distracted) {
+            if(_time - _lastFoundTime > 5 && !_distracted) {
                 setTarget(originPoint);
             }
         }
@@ -88,6 +80,7 @@ package{
             this.stopFollowingPath(true);
             this.velocity.x = this.velocity.y = 0;
             this._curTarget = null;
+            this._distracted = false;
         }
 
         public function setTarget(_point:FlxPoint, speedup:Number = 0):void{

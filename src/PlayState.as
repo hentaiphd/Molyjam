@@ -37,7 +37,7 @@ package{
             cam.targetZoom = 2;
 
             _momGrp = new FlxGroup();
-            for(var i:Number = 0; i < 3; i++){
+            for(var i:Number = 0; i < 4; i++){
                 var _mom:Mom = new Mom(Math.random()*(300-100)+100,Math.random()*(300-100)+100,_level);
                 _momGrp.add(_mom);
                 add(_mom);
@@ -51,7 +51,7 @@ package{
             }
 
             _noiseGrp = new FlxGroup();
-            for(i = 0; i < 3; i++){
+            for(i = 0; i < 5; i++){
                 var _noise:NoiseZone = new NoiseZone(Math.random()*(300),Math.random()*(300));
                 add(_noise);
                 _noiseGrp.add(_noise);
@@ -74,7 +74,7 @@ package{
                 for(var j:Number = 0; j < _noiseGrp.length; j++){
                     if(_noiseGrp.members[j].isActivated &&
                      _momGrp.members[i].displacement(_noiseGrp.members[j]) < 200){
-                        _momGrp.members[i].distract();
+                        _momGrp.members[i]._distracted = true;
                         _momGrp.members[i].setTarget(
                             new FlxPoint(_noiseGrp.members[j].x, _noiseGrp.members[j].y));
                     }
