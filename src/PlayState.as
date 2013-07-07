@@ -9,13 +9,17 @@ package{
         [Embed(source="../assets/tiles1.png")] private var ImgTiles:Class;
         protected var _level:FlxTilemap;
         protected var _player:Player;
+        protected var zoomcam:ZoomCamera;
         protected var _momGrp:FlxGroup;
         protected var _snackGrp:FlxGroup;
         protected var _noiseGrp:FlxGroup;
         protected var _text:FlxText;
         protected var _timer:Number;
+
         protected var _endgameActive:Boolean;
-        protected var _gameStateActive:Boolean = true;
+        protected var _gameStateActive:Boolean;
+        protected var _pregameActive:Boolean = true;
+
         protected var _goalSprite:FlxSprite;
 
         protected var _unusedSnackPositions:Array;
@@ -60,11 +64,10 @@ package{
 
             FlxG.worldBounds = new FlxRect(0, 0, _level.width, _level.height);
 
-            var cam:ZoomCamera = new ZoomCamera(0, 0, 640, 480);
-            FlxG.resetCameras(cam);
-            cam.follow(_level);
-            cam.target = _player;
-            cam.targetZoom = 3;
+            zoomcam = new ZoomCamera(0, 0, 640, 480);
+            FlxG.resetCameras(zoomcam);
+            zoomcam.target = _level;
+            zoomcam.targetZoom = 1;
 
             _momGrp = new FlxGroup();
             for(var i:Number = 0; i < 3; i++){
@@ -121,6 +124,12 @@ package{
             }
         }
 
+        public function startGame():void{
+            _gameStateActive = true;
+            zoomcam.target = _player;
+            zoomcam.targetZoom = 3;
+        }
+
         override public function update():void{
             _timer += FlxG.elapsed;
             _coordsText.text = FlxG.mouse.screenX + " x " + FlxG.mouse.screenY;
@@ -129,13 +138,14 @@ package{
                 if(FlxG.keys.X){
                     FlxG.resetState();
                 }
+            } else if(_pregameActive){
+                if(_timer > 5 && !_gameStateActive){
+                    _pregameActive = false;
+                    startGame();
+                }
             } else if(_gameStateActive){
                 super.update();
                 FlxG.collide(_player, _level);
-
-                if(Math.floor(_timer) % 2 == 0){
-                    flipGoalSpriteColor();
-                }
 
                 updateMomAI();
 
@@ -158,6 +168,11 @@ package{
                     _player.snackGrabbed = null;
                 }
             }
+
+            if(Math.floor(_timer) % 2 == 0){
+                flipGoalSpriteColor();
+            }
+
         }
 
         public function updateMomAI():void{
