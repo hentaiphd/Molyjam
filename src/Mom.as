@@ -8,6 +8,7 @@ package{
         private var textLock:Boolean = false;
         private var _curTarget:FlxPoint;
         private var _level:FlxTilemap;
+        private var _lastFoundTime:Number = 0;
 
         public var _hasHitTarget:Boolean;
         public var _reply:FlxText;
@@ -28,15 +29,15 @@ package{
             }
         }
 
-        public function searchFor(_object:FlxSprite):FlxPoint{
+        public function searchFor(_object:FlxSprite, _time:Number):FlxPoint{
             var found:Boolean = _level.ray(new FlxPoint(x, y),
                                            new FlxPoint(_object.x, _object.y));
-            var maxDisp:Number = 200;
-            if(overlaps(_level)){
-                maxDisp = 50;
-                found = true;
+            if(found){
+                _lastFoundTime = _time;
             }
-            if(found && displacement(_object) < maxDisp){
+            var maxDisp:Number = 100;
+            if((_time - _lastFoundTime < 2) &&
+             displacement(_object) < maxDisp){
                 return new FlxPoint(_object.x, _object.y);
             }
             return null;
@@ -67,7 +68,7 @@ package{
 
             var path:FlxPath = this._level.findPath(
                 new FlxPoint(x + width/2, y + height/2), _point);
-            this.followPath(path, 150);
+            this.followPath(path, 50);
         }
 
         public function moveToPoint(_point:FlxPoint, _level:FlxTilemap):void{
