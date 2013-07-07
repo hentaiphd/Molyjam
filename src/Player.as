@@ -16,7 +16,7 @@ package{
             loadGraphic(sprite, true, true, 15, 28, true);
             width = 8;
             height = 8;
-            offset.y = 17;
+            offset.y = 21;
 
             addAnimation("run", [1,2], 14, true);
             addAnimation("standing", [0]);
