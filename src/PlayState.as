@@ -146,7 +146,7 @@ package{
             _coordsText.text = FlxG.mouse.screenX + " x " + FlxG.mouse.screenY;
 
             if(_endgameActive){
-                if(FlxG.keys.Z){
+                if(FlxG.keys.X){
                     FlxG.resetState();
                 }
             } else if(_pregameActive){
@@ -244,7 +244,7 @@ package{
             t.scrollFactor = new FlxPoint(0, 0);
             t.alignment = "center";
             add(t);
-            t = new FlxText(0,FlxG.height/2+40,FlxG.width,"Z to retry");
+            t = new FlxText(0,FlxG.height/2+40,FlxG.width,"X to retry");
             t.alignment = "center";
             t.size = 10;
             t.scrollFactor = new FlxPoint(0, 0);
