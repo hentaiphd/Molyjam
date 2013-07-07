@@ -9,6 +9,7 @@ package{
         private var _curTarget:FlxPoint;
         private var _level:FlxTilemap;
         private var _lastFoundTime:Number = 0;
+        private var _runSpeed:Number;
 
         public var _hasHitTarget:Boolean;
         public var _reply:FlxText;
@@ -17,6 +18,8 @@ package{
             super(x,y);
 
             this._level = _level;
+            this._runSpeed = Math.random() * (50-40) + 40;
+
 
             this.makeGraphic(5,5,0xFFFF0000)
         }
@@ -29,18 +32,17 @@ package{
             }
         }
 
-        public function searchFor(_object:FlxSprite, _time:Number):FlxPoint{
+        public function searchFor(_object:FlxSprite, _time:Number):void{
             var found:Boolean = _level.ray(new FlxPoint(x, y),
                                            new FlxPoint(_object.x, _object.y));
             if(found){
                 _lastFoundTime = _time;
             }
             var maxDisp:Number = 100;
-            if((_time - _lastFoundTime < 2) &&
-             displacement(_object) < maxDisp){
-                return new FlxPoint(_object.x, _object.y);
+            if((_time - _lastFoundTime < .5) ||
+             found && displacement(_object) < maxDisp){
+                setTarget(new FlxPoint(_object.x, _object.y));
             }
-            return null;
         }
 
         public function displacement(_object:FlxSprite):Number{
@@ -68,7 +70,9 @@ package{
 
             var path:FlxPath = this._level.findPath(
                 new FlxPoint(x + width/2, y + height/2), _point);
-            this.followPath(path, 50);
+            if(path){
+                this.followPath(path, _runSpeed);
+            }
         }
 
         public function moveToPoint(_point:FlxPoint, _level:FlxTilemap):void{

@@ -7,7 +7,7 @@ package{
         [Embed(source="../assets/tiles1.png")] private var ImgTiles:Class;
         protected var _level:FlxTilemap;
         protected var _player:Player;
-        protected var _mom:Mom;
+        protected var _momGrp:FlxGroup;
         protected var _text:FlxText;
         protected var _snackGrp:FlxGroup;
         protected var _snack:Snacks;
@@ -35,8 +35,12 @@ package{
             cam.target = _player;
             cam.targetZoom = 2;
 
-            _mom = new Mom(100,170,_level);
-            add(_mom);
+            _momGrp = new FlxGroup();
+            for(var i:Number = 0; i < 5; i++){
+                var _mom:Mom = new Mom(Math.random()*(300-100)+100,Math.random()*(300-100)+100,_level);
+                _momGrp.add(_mom);
+                add(_mom);
+            }
 
             _snackGrp = new FlxGroup();
 
@@ -57,10 +61,6 @@ package{
             _snackGrp.add(_snack);
         }
 
-        public function collisionCallback(player:Player, mom:Mom):void{
-            _mom.stopFollowing();
-        }
-
         override public function update():void{
             super.update();
 
@@ -68,16 +68,15 @@ package{
 
             FlxG.collide(_player, _level);
 
-            var tgt:FlxPoint = _mom.searchFor(_player, _timer);
-            if(tgt){
-                _mom.setTarget(tgt);
+            for(var i:Number = 0; i < _momGrp.length; i++){
+                _momGrp.members[i].searchFor(_player, _timer);
             }
 
             _player.isGrabbing();
 
             if(FlxG.keys.Z){
                 if(_player.snackGrabbed == null){
-                    for(var i:Number = 0; i < _snackGrp.length; i++){
+                    for(i = 0; i < _snackGrp.length; i++){
                         if(_player.overlaps(_snackGrp.members[i])){
                             _player.isGrabbing(_snackGrp.members[i]);
                         }
