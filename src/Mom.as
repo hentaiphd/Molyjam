@@ -2,7 +2,7 @@ package{
     import org.flixel.*;
 
     public class Mom extends FlxSprite{
-        //[Embed(source = '../assets/sprite.jpg')] public static var sprite:Class;
+        [Embed(source = '../assets/mom_sprite.png')] public static var sprite:Class;
         private var xAnchor:int;
         private var yAnchor:int;
         private var textLock:Boolean = false;
@@ -22,6 +22,12 @@ package{
         public static var maxSpeed:Number = 80;
         public static var minSpeed:Number = 70;
 
+        public var _scale:FlxPoint = new FlxPoint(1,1);
+        public var _scaleFlipX:Number = 1;
+        public var _scaleFlipY:Number = 1;
+
+        public var lastFramVel:FlxPoint = new FlxPoint();
+
         public function Mom(x:Number, y:Number, _level:FlxTilemap):void{
             super(x,y);
 
@@ -29,17 +35,53 @@ package{
             this._runSpeed = Math.random() * (maxSpeed-minSpeed) + minSpeed;
             this.originPoint = new FlxPoint(x, y);
 
-            this.makeGraphic(5,5,0xFFFF0000)
+            loadGraphic(sprite, true, true, 15, 33, true);
+            width = 8;
+            height = 8;
+            offset.y = 16;
+
+            addAnimation("run", [1,2], 14, true);
+            addAnimation("standing", [0]);
+            addAnimation("runBack", [4,5], 14, true);
+            addAnimation("standingBack", [3]);
         }
 
         override public function update():void{
             super.update();
+
+            if(velocity.x > 0){
+                //right
+                play("run");
+                this.scale.x = -_scaleFlipX;
+                this.scale.y = _scaleFlipY;
+            } else if(velocity.x < 0){
+                //left
+                play("run");
+                this.scale.x = _scaleFlipX;
+                this.scale.y = _scaleFlipY;
+            } else if(velocity.y > 0){
+                //down
+                play("run");
+            } else if(velocity.y < 0){
+                //up
+                play("runBack");
+            } else if(velocity.x == 0){
+                if(velocity.y == 0){
+                    if(lastFramVel.y > 0){
+                        play("standing");
+                    } else {
+                        play("standingBack");
+                    }
+                }
+            }
 
             _timer += FlxG.elapsed;
 
             if(_curTarget && this.isInRange(this._curTarget)){
                 stopFollowing();
             }
+
+            lastFramVel = new FlxPoint(velocity.x, velocity.y);
         }
 
         public function searchFor(_object:Player, _time:Number):void{
