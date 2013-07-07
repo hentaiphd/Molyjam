@@ -3,6 +3,7 @@ package{
 
     public class MenuState extends FlxState{
         [Embed(source="../assets/start.png")] private var ImgBG:Class;
+        [Embed(source = "../assets/bgm_mom.mp3")] private var bgm:Class;
 
         override public function create():void{
             var bg:FlxSprite = new FlxSprite(0, 0, ImgBG);
@@ -22,6 +23,8 @@ package{
             add(t2);
 
             FlxG.mouse.hide();
+
+            FlxG.playMusic(bgm);
         }
 
         override public function update():void{
