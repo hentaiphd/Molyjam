@@ -10,6 +10,7 @@ package{
         private var _level:FlxTilemap;
         private var _lastFoundTime:Number = 0;
         private var _runSpeed:Number;
+        private var originPoint:FlxPoint;
 
         public var _hasHitTarget:Boolean;
         public var _reply:FlxText;
@@ -19,7 +20,7 @@ package{
 
             this._level = _level;
             this._runSpeed = Math.random() * (50-40) + 40;
-
+            this.originPoint = new FlxPoint(x, y);
 
             this.makeGraphic(5,5,0xFFFF0000)
         }
@@ -32,16 +33,22 @@ package{
             }
         }
 
-        public function searchFor(_object:FlxSprite, _time:Number):void{
+        public function searchFor(_object:Player, _time:Number):void{
             var found:Boolean = _level.ray(new FlxPoint(x, y),
                                            new FlxPoint(_object.x, _object.y));
             if(found){
                 _lastFoundTime = _time;
             }
             var maxDisp:Number = 100;
-            if((_time - _lastFoundTime < .5) ||
-             found && displacement(_object) < maxDisp){
-                setTarget(new FlxPoint(_object.x, _object.y));
+
+            if(_object.snackGrabbed){
+                if(((_time - _lastFoundTime < .5) ||
+                 found && displacement(_object) < maxDisp)){
+                    setTarget(new FlxPoint(_object.x, _object.y), 10);
+                }
+            }
+            if(_time - _lastFoundTime > 5) {
+                setTarget(originPoint);
             }
         }
 
@@ -65,13 +72,13 @@ package{
             this._curTarget = null;
         }
 
-        public function setTarget(_point:FlxPoint):void{
+        public function setTarget(_point:FlxPoint, speedup:Number = 0):void{
             this._curTarget = _point;
 
             var path:FlxPath = this._level.findPath(
                 new FlxPoint(x + width/2, y + height/2), _point);
             if(path){
-                this.followPath(path, _runSpeed);
+                this.followPath(path, _runSpeed+speedup);
             }
         }
 

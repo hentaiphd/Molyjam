@@ -10,7 +10,6 @@ package{
         protected var _momGrp:FlxGroup;
         protected var _text:FlxText;
         protected var _snackGrp:FlxGroup;
-        protected var _snack:Snacks;
         protected var _timer:Number;
 
         override public function create():void{
@@ -32,11 +31,12 @@ package{
 
             var cam:ZoomCamera = new ZoomCamera(0, 0, 640, 480);
             FlxG.resetCameras(cam);
+            cam.follow(_level);
             cam.target = _player;
-            cam.targetZoom = 2;
+            cam.targetZoom = 3;
 
             _momGrp = new FlxGroup();
-            for(var i:Number = 0; i < 5; i++){
+            for(var i:Number = 0; i < 2; i++){
                 var _mom:Mom = new Mom(Math.random()*(300-100)+100,Math.random()*(300-100)+100,_level);
                 _momGrp.add(_mom);
                 add(_mom);
@@ -44,21 +44,11 @@ package{
 
             _snackGrp = new FlxGroup();
 
-            _snack = new Snacks(250,100);
-            add(_snack);
-            _snackGrp.add(_snack);
-
-            _snack = new Snacks(100,250);
-            add(_snack);
-            _snackGrp.add(_snack);
-
-            _snack = new Snacks(100,100);
-            add(_snack);
-            _snackGrp.add(_snack);
-
-            _snack = new Snacks(300,300);
-            add(_snack);
-            _snackGrp.add(_snack);
+            for(i = 0; i < 20; i++){
+                var _snack:Snacks = new Snacks(Math.random()*(300),Math.random()*(300));
+                add(_snack);
+                _snackGrp.add(_snack);
+            }
         }
 
         override public function update():void{
@@ -70,6 +60,10 @@ package{
 
             for(var i:Number = 0; i < _momGrp.length; i++){
                 _momGrp.members[i].searchFor(_player, _timer);
+                if(_player.snackGrabbed &&
+                 _momGrp.members[i].isInRange(new FlxPoint(_player.x, _player.y))){
+                    // Game over
+                }
             }
 
             _player.isGrabbing();
