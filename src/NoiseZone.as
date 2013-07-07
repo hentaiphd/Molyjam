@@ -42,9 +42,11 @@ package{
         }
 
         public function makeActive():void{
-            isActivated = true;
-            _activatedTime = _timer;
-            play("fall");
+            if(!isActivated){
+                isActivated = true;
+                _activatedTime = _timer;
+                play("fall");
+            }
         }
 
         override public function update():void{

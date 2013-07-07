@@ -155,7 +155,7 @@ package{
                     if(_player.snackGrabbed == null){
                         var _snack:Snacks;
                         for(var i:Number = 0; i < _snackGrp.length; i++){
-                            if(displacement(_player, _snackGrp.members[i]) < 15){
+                            if(displacement(_player, _snackGrp.members[i] as Snacks) < 15){
                                 _player.isGrabbing(_snackGrp.members[i]);
                                 if(!_snackGrp.members[i].wasMoved){
                                     _snackGrp.members[i].wasMoved = true;
@@ -168,11 +168,13 @@ package{
                                 }
                             }
                         }
-                        _snackGrp.add(_snack);
-                        for(i = 0; i < _noiseGrp.length; i++){
-                            if(displacement(_player, _noiseGrp.members[i]) < 15){
-                                _noiseGrp.members[i].makeActive();
-                            }
+                        if(_snack){
+                            _snackGrp.add(_snack);
+                        }
+                    }
+                    for(i = 0; i < _noiseGrp.length; i++){
+                        if(displacement(_player, _noiseGrp.members[i] as NoiseZone) < 15){
+                            _noiseGrp.members[i].makeActive();
                         }
                     }
                 } else {
