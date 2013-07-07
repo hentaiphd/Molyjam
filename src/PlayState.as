@@ -8,8 +8,9 @@ package{
         protected var _level:FlxTilemap;
         protected var _player:Player;
         protected var _momGrp:FlxGroup;
-        protected var _text:FlxText;
         protected var _snackGrp:FlxGroup;
+        protected var _noiseGrp:FlxGroup;
+        protected var _text:FlxText;
         protected var _timer:Number;
 
         override public function create():void{
@@ -33,7 +34,7 @@ package{
             FlxG.resetCameras(cam);
             cam.follow(_level);
             cam.target = _player;
-            cam.targetZoom = 3;
+            cam.targetZoom = 2;
 
             _momGrp = new FlxGroup();
             for(var i:Number = 0; i < 3; i++){
@@ -43,11 +44,17 @@ package{
             }
 
             _snackGrp = new FlxGroup();
-
             for(i = 0; i < 20; i++){
                 var _snack:Snacks = new Snacks(Math.random()*(300),Math.random()*(300));
                 add(_snack);
                 _snackGrp.add(_snack);
+            }
+
+            _noiseGrp = new FlxGroup();
+            for(i = 0; i < 3; i++){
+                var _noise:NoiseZone = new NoiseZone(Math.random()*(300),Math.random()*(300));
+                add(_noise);
+                _noiseGrp.add(_noise);
             }
         }
 
@@ -64,6 +71,14 @@ package{
                  _momGrp.members[i].isInRange(new FlxPoint(_player.x, _player.y))){
                     // Game over
                 }
+                for(var j:Number = 0; j < _noiseGrp.length; j++){
+                    if(_noiseGrp.members[j].isActivated &&
+                     _momGrp.members[i].displacement(_noiseGrp.members[j]) < 200){
+                        _momGrp.members[i].distract();
+                        _momGrp.members[i].setTarget(
+                            new FlxPoint(_noiseGrp.members[j].x, _noiseGrp.members[j].y));
+                    }
+                }
             }
 
             _player.isGrabbing();
@@ -73,6 +88,11 @@ package{
                     for(i = 0; i < _snackGrp.length; i++){
                         if(_player.overlaps(_snackGrp.members[i])){
                             _player.isGrabbing(_snackGrp.members[i]);
+                        }
+                    }
+                    for(i = 0; i < _noiseGrp.length; i++){
+                        if(_player.overlaps(_noiseGrp.members[i])){
+                            _noiseGrp.members[i].makeActive();
                         }
                     }
                 }

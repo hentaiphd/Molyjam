@@ -13,7 +13,11 @@ package{
         private var originPoint:FlxPoint;
 
         public var _hasHitTarget:Boolean;
+        public var _distracted:Boolean;
+        public var _distractedTime:Number;
         public var _reply:FlxText;
+
+        public var _timer:Number;
 
         public static var maxSpeed:Number = 80;
         public static var minSpeed:Number = 70;
@@ -31,26 +35,37 @@ package{
         override public function update():void{
             super.update();
 
+            _timer += FlxG.elapsed;
+
             if(_curTarget && this.isInRange(this._curTarget)){
                 stopFollowing();
             }
+
+            if(_distracted && _timer - _distractedTime > 10){
+                _distracted = false;
+            }
+        }
+
+        public function distract():void{
+            _distracted = true;
+            _distractedTime = _timer;
         }
 
         public function searchFor(_object:Player, _time:Number):void{
             var found:Boolean = _level.ray(new FlxPoint(x, y),
                                            new FlxPoint(_object.x, _object.y));
-            if(found){
+            if(found && _object.snackGrabbed){
                 _lastFoundTime = _time;
             }
             var maxDisp:Number = 100;
 
             if(_object.snackGrabbed){
                 if(((_time - _lastFoundTime < .5) ||
-                 found && displacement(_object) < maxDisp)){
+                 found && !_distracted && displacement(_object) < maxDisp)){
                     setTarget(new FlxPoint(_object.x, _object.y), 10);
                 }
             }
-            if(_time - _lastFoundTime > 5) {
+            if(_time - _lastFoundTime > 5 || !_distracted) {
                 setTarget(originPoint);
             }
         }

@@ -19,7 +19,7 @@ package{
             }
 
             if(snackGrabbed != null){
-                snackGrabbed.x = this.x+20;
+                snackGrabbed.x = this.x+5;
                 snackGrabbed.y = this.y;
             }
         }
