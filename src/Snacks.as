@@ -19,7 +19,7 @@ package{
         public function Snacks(x:int, y:int):void{
             super(x,y);
 
-            var pick:Number = FlxG.random()*12;
+            var pick:Number = FlxG.random()*10;
             var graphic:Class;
             if(pick > 9){
                 graphic = sprite10;
