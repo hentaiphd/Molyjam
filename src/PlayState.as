@@ -37,7 +37,7 @@ package{
         override public function create():void{
             setupItemPositions();
 
-            FlxG.mouse.show();
+            //FlxG.mouse.show();
 
             _timer = 0;
 
@@ -67,7 +67,7 @@ package{
             zoomcam = new ZoomCamera(0, 0, 640, 480);
             FlxG.resetCameras(zoomcam);
             zoomcam.target = _level;
-            zoomcam.targetZoom = 1;
+            zoomcam.targetZoom = 1.2;
 
             _momGrp = new FlxGroup();
             for(var i:Number = 0; i < 3; i++){
