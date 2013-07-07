@@ -4,7 +4,7 @@ package{
     public class Player extends FlxSprite{
         [Embed(source = '../assets/girl_sprite.png')] public static var sprite:Class;
 
-        private var runSpeed:Number = 3;
+        private var runSpeed:Number = 1;
         public var snackGrabbed:FlxSprite = null;
         public var _scale:FlxPoint = new FlxPoint(1,1);
         public var _scaleFlipX:Number = 1;
