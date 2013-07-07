@@ -80,7 +80,7 @@ package{
             }
 
             _snackGrp = new FlxGroup();
-            for(i = 0; i < 8; i++){
+            for(i = 0; i < 19; i++){
                 thisIndex = Math.floor(Math.random()*_unusedSnackPositions.length);
                 mypos = _unusedSnackPositions[thisIndex] as FlxPoint;
                 var _snack:Snacks = new Snacks(mypos.x, mypos.y);
@@ -106,14 +106,15 @@ package{
             //add(_coordsText);
         }
 
-        public function goalContainsSnack():Boolean{
+        public function snacksInGoal():Number{
+            var count:Number = 0;
             for(var i:Number = 0; i < _snackGrp.length; i++){
                 var _snk:Snacks = _snackGrp.members[i];
                 if(_snk.overlaps(_goalSprite)){
-                    return true;
+                    count++;
                 }
             }
-            return false;
+            return count;
         }
 
         public function flipGoalSpriteColor():void{
@@ -153,11 +154,22 @@ package{
 
                 if(FlxG.keys.Z){
                     if(_player.snackGrabbed == null){
+                        var _snack:Snacks;
                         for(var i:Number = 0; i < _snackGrp.length; i++){
                             if(displacement(_player, _snackGrp.members[i]) < 15){
                                 _player.isGrabbing(_snackGrp.members[i]);
+                                if(!_snackGrp.members[i].wasMoved){
+                                    _snackGrp.members[i].wasMoved = true;
+                                    _snack = new Snacks(
+                                        _snackGrp.members[i].x,
+                                        _snackGrp.members[i].y
+                                    );
+                                    add(_snack);
+                                    break;
+                                }
                             }
                         }
+                        _snackGrp.add(_snack);
                         for(i = 0; i < _noiseGrp.length; i++){
                             if(displacement(_player, _noiseGrp.members[i]) < 15){
                                 _noiseGrp.members[i].makeActive();
@@ -181,8 +193,8 @@ package{
                 _tmom.searchFor(_player, _timer);
                 if((_player.snackGrabbed &&
                     _tmom.isInRange(new FlxPoint(_player.x, _player.y))) ||
-                    (_tmom.overlaps(_goalSprite) && goalContainsSnack())){
-                    if((_tmom.overlaps(_goalSprite) && goalContainsSnack())){
+                    (_tmom.overlaps(_goalSprite) && snacksInGoal() > 0)){
+                    if((_tmom.overlaps(_goalSprite) && snacksInGoal() > 0)){
                         FlxG.camera.target = _tmom;
                     }
                     if(!_endgameActive){
@@ -207,9 +219,14 @@ package{
             op.fill(0x55000000);
             add(op);
 
+            var plur:String = "s";
+            if(snacksInGoal() == 1){
+                plur = "";
+            }
+
             var t:FlxText;
-            t = new FlxText(0,FlxG.height/2-50,FlxG.width,"caught!!");
-            t.size = 18;
+            t = new FlxText(0,FlxG.height/2-50,FlxG.width,"nabbed!!\nhoarded " + snacksInGoal() + " snack" + plur + "\nbefore mom caught you");
+            t.size = 14;
             t.scrollFactor = new FlxPoint(0, 0);
             t.alignment = "center";
             add(t);

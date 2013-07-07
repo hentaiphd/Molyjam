@@ -14,6 +14,7 @@ package{
         [Embed(source = '../assets/cookie.png')] public static var sprite10:Class;
 
         private static var foodGrp:FlxGroup;
+        public var wasMoved:Boolean;
 
         public function Snacks(x:int, y:int):void{
             super(x,y);
