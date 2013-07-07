@@ -56,7 +56,7 @@ package{
                 var thisIndex:Number = Math.floor(Math.random()*_unusedEndzones.length);
                 var _rect:FlxRect = _unusedEndzones[thisIndex] as FlxRect;
                 _goalSprite = new FlxSprite(_rect.x, _rect.y);
-                _goalSprite.makeGraphic(_rect.width, _rect.height, 0x44FF0000);
+                _goalSprite.makeGraphic(_rect.width, _rect.height, 0xeeFF3399);
                 add(_goalSprite);
             }
 
@@ -146,7 +146,7 @@ package{
             _coordsText.text = FlxG.mouse.screenX + " x " + FlxG.mouse.screenY;
 
             if(_endgameActive){
-                if(FlxG.keys.X){
+                if(FlxG.keys.Z){
                     FlxG.resetState();
                 }
             } else if(_pregameActive){
@@ -244,7 +244,7 @@ package{
             t.scrollFactor = new FlxPoint(0, 0);
             t.alignment = "center";
             add(t);
-            t = new FlxText(0,FlxG.height/2+40,FlxG.width,"X to retry");
+            t = new FlxText(0,FlxG.height/2+40,FlxG.width,"Z to retry");
             t.alignment = "center";
             t.size = 10;
             t.scrollFactor = new FlxPoint(0, 0);

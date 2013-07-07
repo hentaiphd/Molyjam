@@ -15,6 +15,12 @@ package{
             t2.size = 16;
             add(t2);
 
+            t2 = new FlxText(0,FlxG.height-120,FlxG.width,"Nina Freeman and Emmett Butler\nMusic by seagaia\nMolyjam 2013");
+            t2.alignment = "center";
+            t2.color = 0xff2d686b;
+            t2.size = 16;
+            add(t2);
+
             FlxG.mouse.hide();
         }
 
