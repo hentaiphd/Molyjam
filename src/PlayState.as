@@ -21,6 +21,7 @@ package{
         protected var _unusedSnackPositions:Array;
         protected var _unusedMomPositions:Array;
         protected var _unusedNoisePositions:Array;
+        protected var _unusedEndzones:Array;
 
         protected var _coordsText:FlxText;
 
@@ -45,9 +46,14 @@ package{
             _level.setTileProperties(15,0);
             _level.setTileProperties(44,0,null,null,4);
 
-            _goalSprite = new FlxSprite(320, 320);
-            _goalSprite.makeGraphic(30, 30, 0x00FF00FF);
-            add(_goalSprite);
+            for(var j:Number = 0; j < 1; j++){
+                var thisIndex:Number = Math.floor(Math.random()*_unusedEndzones.length);
+                var _rect:FlxRect = _unusedEndzones[thisIndex] as FlxRect;
+                _goalSprite = new FlxSprite(_rect.x, _rect.y);
+                _goalSprite.makeGraphic(_rect.width, _rect.height, 0xFFFFFF00);
+                add(_goalSprite);
+                _unusedEndzones.splice(thisIndex, 1);
+            }
 
             _player = new Player(300,300);
             add(_player);
@@ -58,15 +64,16 @@ package{
             FlxG.resetCameras(cam);
             cam.follow(_level);
             cam.target = _player;
-            cam.targetZoom = 3;
+            cam.targetZoom = 1;
 
             _momGrp = new FlxGroup();
             for(var i:Number = 0; i < 3; i++){
-                var thisIndex:Number = Math.floor(Math.random()*_unusedMomPositions.length);
+                thisIndex = Math.floor(Math.random()*_unusedMomPositions.length);
                 var mypos:FlxPoint = _unusedMomPositions[thisIndex] as FlxPoint;
                 var _mom:Mom = new Mom(mypos.x, mypos.y,_level);
                 _momGrp.add(_mom);
                 add(_mom);
+                _unusedMomPositions.splice(thisIndex, 1);
             }
 
             _snackGrp = new FlxGroup();
@@ -76,6 +83,7 @@ package{
                 var _snack:Snacks = new Snacks(mypos.x, mypos.y);
                 add(_snack);
                 _snackGrp.add(_snack);
+                _unusedSnackPositions.splice(thisIndex, 1);
             }
 
             _noiseGrp = new FlxGroup();
@@ -232,6 +240,20 @@ package{
                 new FlxPoint(162, 360),
                 new FlxPoint(55, 360)
             );
+
+            _unusedEndzones = new Array();
+            var _spr:FlxRect = new FlxRect(320, 320, 30, 30);
+            _unusedEndzones.push(_spr);
+            _spr = new FlxRect(320, 97, 40, 80);
+            _unusedEndzones.push(_spr);
+            _spr = new FlxRect(3, 267, 90, 50);
+            _unusedEndzones.push(_spr);
+            _spr = new FlxRect(3, 3, 115, 75);
+            _unusedEndzones.push(_spr);
+            _spr = new FlxRect(3, 327, 90, 60);
+            _unusedEndzones.push(_spr);
+            _spr = new FlxRect(272, 169, 40, 10);
+            _unusedEndzones.push(_spr);
         }
 
         public function displacement(_object1:FlxSprite, _object2:FlxSprite):Number{
