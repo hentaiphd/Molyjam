@@ -146,7 +146,10 @@ package{
                 _tmom.searchFor(_player, _timer);
                 if((_player.snackGrabbed &&
                     _tmom.isInRange(new FlxPoint(_player.x, _player.y))) ||
-                    (_tmom.overlaps(_goalSprite) && goalContainsSnack)){
+                    (_tmom.overlaps(_goalSprite) && goalContainsSnack())){
+                    if((_tmom.overlaps(_goalSprite) && goalContainsSnack())){
+                        FlxG.camera.target = _tmom;
+                    }
                     if(!_endgameActive){
                         _endgameActive = true;
                         showEndgame();
@@ -154,7 +157,7 @@ package{
                 }
                 for(var j:Number = 0; j < _noiseGrp.length; j++){
                     if(_noiseGrp.members[j].isActivated &&
-                    _momGrp.members[i].displacement(_noiseGrp.members[j]) < 200){
+                    _momGrp.members[i].displacement(_noiseGrp.members[j]) < 700){
                         _momGrp.members[i]._distracted = true;
                         _momGrp.members[i].setTarget(
                             new FlxPoint(_noiseGrp.members[j].x, _noiseGrp.members[j].y));
@@ -206,7 +209,7 @@ package{
             );
 
             _unusedMomPositions = new Array(
-                new FlxPoint(196, 7),
+                new FlxPoint(196, 17),
                 new FlxPoint(107, 143),
                 new FlxPoint(161, 345),
                 new FlxPoint(299, 277),
