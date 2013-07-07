@@ -230,6 +230,7 @@ package{
         public function showEndgame():void{
             var op:FlxSprite = new FlxSprite(0, 0);
             op.makeGraphic(640, 480);
+            op.scrollFactor = new FlxPoint(0, 0);
             op.fill(0x55000000);
             add(op);
 
