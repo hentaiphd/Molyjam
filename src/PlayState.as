@@ -38,6 +38,7 @@ package{
         override public function create():void{
             setupItemPositions();
 
+            FlxG.bgColor = 0xFFccfbff;
             //FlxG.mouse.show();
 
             _timer = 0;
