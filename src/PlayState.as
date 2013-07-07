@@ -92,7 +92,7 @@ package{
             _coordsText.alignment = "center";
             _coordsText.color = 0xFFFF0000;
             _coordsText.scrollFactor = new FlxPoint(0, 0);
-            add(_coordsText);
+            //add(_coordsText);
         }
 
         public function goalContainsSnack():Boolean{
@@ -117,32 +117,13 @@ package{
                 super.update();
                 FlxG.collide(_player, _level);
 
-                for(var i:Number = 0; i < _momGrp.length; i++){
-                    var _tmom:Mom = _momGrp.members[i];
-                    _tmom.searchFor(_player, _timer);
-                    if((_player.snackGrabbed &&
-                     _tmom.isInRange(new FlxPoint(_player.x, _player.y))) ||
-                     (_tmom.overlaps(_goalSprite) && goalContainsSnack)){
-                        if(!_endgameActive){
-                            _endgameActive = true;
-                            showEndgame();
-                        }
-                    }
-                    for(var j:Number = 0; j < _noiseGrp.length; j++){
-                        if(_noiseGrp.members[j].isActivated &&
-                        _momGrp.members[i].displacement(_noiseGrp.members[j]) < 200){
-                            _momGrp.members[i]._distracted = true;
-                            _momGrp.members[i].setTarget(
-                                new FlxPoint(_noiseGrp.members[j].x, _noiseGrp.members[j].y));
-                        }
-                    }
-                }
+                updateMomAI();
 
                 _player.isGrabbing();
 
                 if(FlxG.keys.Z){
                     if(_player.snackGrabbed == null){
-                        for(i = 0; i < _snackGrp.length; i++){
+                        for(var i:Number = 0; i < _snackGrp.length; i++){
                             if(displacement(_player, _snackGrp.members[i]) < 15){
                                 _player.isGrabbing(_snackGrp.members[i]);
                             }
@@ -155,6 +136,29 @@ package{
                     }
                 } else {
                     _player.snackGrabbed = null;
+                }
+            }
+        }
+
+        public function updateMomAI():void{
+            for(var i:Number = 0; i < _momGrp.length; i++){
+                var _tmom:Mom = _momGrp.members[i];
+                _tmom.searchFor(_player, _timer);
+                if((_player.snackGrabbed &&
+                    _tmom.isInRange(new FlxPoint(_player.x, _player.y))) ||
+                    (_tmom.overlaps(_goalSprite) && goalContainsSnack)){
+                    if(!_endgameActive){
+                        _endgameActive = true;
+                        showEndgame();
+                    }
+                }
+                for(var j:Number = 0; j < _noiseGrp.length; j++){
+                    if(_noiseGrp.members[j].isActivated &&
+                    _momGrp.members[i].displacement(_noiseGrp.members[j]) < 200){
+                        _momGrp.members[i]._distracted = true;
+                        _momGrp.members[i].setTarget(
+                            new FlxPoint(_noiseGrp.members[j].x, _noiseGrp.members[j].y));
+                    }
                 }
             }
         }
