@@ -13,6 +13,7 @@ package{
         private var originPoint:FlxPoint;
 
         public var _hasHitTarget:Boolean;
+        public var _shouldFindNewTarget:Boolean;
         public var _distracted:Boolean;
         public var _distractedTime:Number;
         public var _reply:FlxText;
@@ -40,9 +41,11 @@ package{
             this._patrolPoints = new Array();
 
             loadGraphic(sprite, true, true, 15, 33, true);
-            width = 8;
-            height = 8;
+            width = 1;
+            height = 1;
             offset.y = 16;
+
+            _shouldFindNewTarget = true;
 
             addAnimation("run", [1,2], 7, true);
             addAnimation("standing", [0]);
@@ -81,8 +84,12 @@ package{
 
             _timer += FlxG.elapsed;
 
-            if(_curTarget && this.isInRange(this._curTarget)){
+            if(!_curTarget || this.isInRange(this._curTarget)){
                 stopFollowing();
+                _shouldFindNewTarget = true;
+            }
+
+            if(_shouldFindNewTarget){
                 setTarget(getNextPatrolPoint(), -30);
             }
 
@@ -105,19 +112,19 @@ package{
             var found:Boolean = _level.ray(new FlxPoint(x, y),
                                            new FlxPoint(_object.x, _object.y));
             if(found){
-                _lastFoundTime = _time;
+                _lastFoundTime = _timer;
             }
             var maxDisp:Number = 100;
 
-            if(_object.snackGrabbed){
-                if(((_time - _lastFoundTime < .5) ||
+            if(_object.snackGrabbed != null){
+                if(((_timer - _lastFoundTime < .5) ||
                  found && displacement(_object) < maxDisp)){
-                    _distracted = false;
-                    setTarget(new FlxPoint(_object.x, _object.y), 10);
+                    if(_object){
+                        _distracted = false;
+                        _shouldFindNewTarget = false;
+                        setTarget(new FlxPoint(_object.x, _object.y), 10);
+                    }
                 }
-            }
-            if(_time - _lastFoundTime > 5 && !_distracted) {
-                setTarget(getNextPatrolPoint(), -30);
             }
         }
 
@@ -128,8 +135,8 @@ package{
         }
 
         public function isInRange(_point:FlxPoint):Boolean{
-            if(Math.abs(_point.x - this.x) < 10 &&
-               Math.abs(_point.y - this.y) < 10){
+            if(Math.abs(_point.x - this.x) < 20 &&
+               Math.abs(_point.y - this.y) < 20){
                 return true;
             }
             return false;
@@ -148,6 +155,7 @@ package{
             var path:FlxPath = this._level.findPath(
                 new FlxPoint(x + width/2, y + height/2), _point);
             if(path){
+                _shouldFindNewTarget = false;
                 this.followPath(path, _runSpeed+speedup);
             }
         }

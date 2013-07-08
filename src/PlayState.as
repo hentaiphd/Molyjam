@@ -73,7 +73,7 @@ package{
             zoomcam.targetZoom = 1.2;
 
             _momGrp = new FlxGroup();
-            for(var i:Number = 0; i < 3; i++){
+            for(var i:Number = 0; i < 4; i++){
                 thisIndex = Math.floor(Math.random()*_unusedMomPositions.length);
                 var mypos:FlxPoint = _unusedMomPositions[thisIndex] as FlxPoint;
                 var _mom:Mom = new Mom(mypos.x, mypos.y,_level);
@@ -141,7 +141,7 @@ package{
         public function startGame():void{
             _gameStateActive = true;
             zoomcam.target = _player;
-            zoomcam.targetZoom = 3;
+            zoomcam.targetZoom = 1.2;
         }
 
         override public function update():void{
@@ -160,6 +160,7 @@ package{
             } else if(_gameStateActive){
                 super.update();
                 FlxG.collide(_player, _level);
+                FlxG.collide(_momGrp, _level);
 
                 updateMomAI();
 
@@ -213,6 +214,7 @@ package{
         public function updateMomAI():void{
             for(var i:Number = 0; i < _momGrp.length; i++){
                 var _tmom:Mom = _momGrp.members[i];
+                if(_tmom == null) continue;
                 _tmom.searchFor(_player, _timer);
                 if((_player.snackGrabbed &&
                     _tmom.isInRange(new FlxPoint(_player.x, _player.y))) ||
