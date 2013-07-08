@@ -310,6 +310,7 @@ package{
                 new FlxPoint(173, 11),
                 new FlxPoint(23, 59),
                 new FlxPoint(124, 135),
+                new FlxPoint(377, 287),
                 new FlxPoint(15, 166),
                 new FlxPoint(39, 227),
                 new FlxPoint(162, 360),

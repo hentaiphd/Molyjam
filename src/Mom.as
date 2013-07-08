@@ -90,7 +90,7 @@ package{
             }
 
             if(_shouldFindNewTarget){
-                setTarget(getNextPatrolPoint(), -30);
+                setTarget(getNextPatrolPoint(), -50);
             }
 
             lastFramVel = new FlxPoint(velocity.x, velocity.y);
