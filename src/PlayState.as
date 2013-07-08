@@ -141,7 +141,7 @@ package{
         public function startGame():void{
             _gameStateActive = true;
             zoomcam.target = _player;
-            zoomcam.targetZoom = 1.2;
+            zoomcam.targetZoom = 3;
         }
 
         override public function update():void{
