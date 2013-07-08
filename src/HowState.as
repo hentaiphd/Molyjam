@@ -18,7 +18,7 @@ package
             t.size = 22;
 
             t.color = 0xff2d686b;
-            t.text = "LEFT, RIGHT, UP, DOWN Arrow Keys to move. \n\n Gather snacks by pressing and holding z. \n\n Hide them in your stash! (Hint: it's blinking!) \n\n Don't let mom catch you with snacks... or your stash! \n To distract her, knock stuff over with z.";
+            t.text = "Move using your arrow keys: left, right, up and down.\n\nHold Z to pick up and carry snacks to hide in your stash. (Hint: it's blinking!)\n\nDon't let mom catch you with snacks... or your stash! To distract her, knock stuff over with Z.";
             add(t);
 
             t = new FlxText(0,FlxG.height-40,FlxG.width,"Z to play");

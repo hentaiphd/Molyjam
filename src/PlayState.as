@@ -58,7 +58,7 @@ package{
                 var thisIndex:Number = Math.floor(Math.random()*_unusedEndzones.length);
                 var _rect:FlxRect = _unusedEndzones[thisIndex] as FlxRect;
                 _goalSprite = new FlxSprite(_rect.x, _rect.y);
-                _goalSprite.makeGraphic(_rect.width, _rect.height, 0xeeFF3399);
+                _goalSprite.makeGraphic(_rect.width, _rect.height, 0xeeFF7519);
                 add(_goalSprite);
             }
 
