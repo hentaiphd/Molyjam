@@ -7,6 +7,7 @@ package{
     public class PlayState extends FlxState {
         [Embed(source="../assets/mapCSV_Group1_Map1.csv", mimeType = "application/octet-stream")] private var Map:Class;
         [Embed(source="../assets/tiles1.png")] private var ImgTiles:Class;
+        [Embed(source="../assets/star.png")] private var ImgStar:Class;
         [Embed(source = "../assets/bgm_mom.mp3")] private var bgm:Class;
         protected var _level:FlxTilemap;
         protected var _player:Player;
@@ -31,6 +32,10 @@ package{
         protected var GOAL_SNACKS:Number;
 
         protected var _coordsText:FlxText;
+
+        protected var _bringSnacksHere:FlxText;
+
+        protected var starSprite:FlxSprite;
 
         public function assert(expression:Boolean):void{
             if (!expression)
@@ -62,7 +67,19 @@ package{
                 add(_goalSprite);
             }
 
-            _player = new Player(10, 10);
+            _bringSnacksHere = new FlxText(_goalSprite.x,_goalSprite.y-10,200,"Stash snacks here!");
+            _bringSnacksHere.size = 13;
+            _bringSnacksHere.color = 0x003D3D5C;
+            add(_bringSnacksHere);
+
+            starSprite = new FlxSprite(_goalSprite.x,_goalSprite.y);
+            starSprite.loadGraphic(ImgStar, true, true, 23, 26, true);
+            starSprite.addAnimation("blink", [0,1], 14, true);
+            starSprite.scale.x = .3;
+            starSprite.scale.y = .3;
+            add(starSprite);
+
+            _player = new Player(10, 70);
             add(_player);
 
             FlxG.worldBounds = new FlxRect(0, 0, _level.width, _level.height);
@@ -142,10 +159,12 @@ package{
             _gameStateActive = true;
             zoomcam.target = _player;
             zoomcam.targetZoom = 3;
+            _bringSnacksHere.kill();
         }
 
         override public function update():void{
             _timer += FlxG.elapsed;
+            starSprite.play("blink");
             _coordsText.text = FlxG.mouse.screenX + " x " + FlxG.mouse.screenY;
 
             if(_endgameActive){
@@ -153,7 +172,7 @@ package{
                     FlxG.resetState();
                 }
             } else if(_pregameActive){
-                if(_timer > 5 && !_gameStateActive){
+                if(_timer > 6 && !_gameStateActive){
                     _pregameActive = false;
                     startGame();
                 }
