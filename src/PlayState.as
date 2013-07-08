@@ -169,13 +169,14 @@ package{
                             if(displacement(_player, _snackGrp.members[i] as Snacks) < 15){
                                 _player.isGrabbing(_snackGrp.members[i]);
                                 if(!_snackGrp.members[i].wasMoved){
-                                    _snackGrp.members[i].wasMoved = true;
+                                    /*_snackGrp.members[i].wasMoved = true;
                                     _snack = new Snacks(
                                         _snackGrp.members[i].x,
                                         _snackGrp.members[i].y
                                     );
                                     add(_snack);
                                     break;
+                                    */
                                 }
                             }
                         }
