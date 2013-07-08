@@ -28,6 +28,8 @@ package{
         protected var _unusedNoisePositions:Array;
         protected var _unusedEndzones:Array;
 
+        protected var GOAL_SNACKS:Number;
+
         protected var _coordsText:FlxText;
 
         public function assert(expression:Boolean):void{
@@ -81,7 +83,8 @@ package{
             }
 
             _snackGrp = new FlxGroup();
-            for(i = 0; i < 19; i++){
+            GOAL_SNACKS = 19;
+            for(i = 0; i < GOAL_SNACKS; i++){
                 thisIndex = Math.floor(Math.random()*_unusedSnackPositions.length);
                 mypos = _unusedSnackPositions[thisIndex] as FlxPoint;
                 var _snack:Snacks = new Snacks(mypos.x, mypos.y);
@@ -162,6 +165,11 @@ package{
 
                 _player.isGrabbing();
 
+                if(snacksInGoal() == GOAL_SNACKS){
+                    _endgameActive = true;
+                    showEndgame(true);
+                }
+
                 if(FlxG.keys.Z){
                     if(_player.snackGrabbed == null){
                         var _snack:Snacks;
@@ -228,7 +236,7 @@ package{
             }
         }
 
-        public function showEndgame():void{
+        public function showEndgame(win:Boolean=false):void{
             var op:FlxSprite = new FlxSprite(0, 0);
             op.makeGraphic(640, 480);
             op.scrollFactor = new FlxPoint(0, 0);
@@ -241,7 +249,12 @@ package{
             }
 
             var t:FlxText;
-            t = new FlxText(0,FlxG.height/2-50,FlxG.width,"nabbed!!\nhoarded " + snacksInGoal() + " snack" + plur + "\nbefore mom caught you");
+            t = new FlxText(0,FlxG.height/2-50,FlxG.width,"");
+            if(!win){
+             t.text = "nabbed!!\nhoarded " + snacksInGoal() + " snack" + plur + "\nbefore mom caught you";
+            } else {
+                t.text = "yeah!\nyou got all the snacks\nin the whole house!";
+            }
             t.size = 14;
             t.scrollFactor = new FlxPoint(0, 0);
             t.alignment = "center";
