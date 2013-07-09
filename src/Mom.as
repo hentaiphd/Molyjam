@@ -114,7 +114,7 @@ package{
             if(found){
                 _lastFoundTime = _timer;
             }
-            var maxDisp:Number = 100;
+            var maxDisp:Number = 500;
 
             if(_object.snackGrabbed != null){
                 if(((_timer - _lastFoundTime < .5) ||
